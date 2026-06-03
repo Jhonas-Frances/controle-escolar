@@ -14,6 +14,7 @@ if (
 
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="UTF-8">
     <title>Equipamentos</title>
@@ -24,165 +25,165 @@ if (
 
 <body>
 
-<div class="sidebar">
-    <h2>Controle Escolar</h2>
+    <div class="sidebar">
+        <h2>Controle Escolar</h2>
 
-    <a href="dashboard.php">Dashboard</a>
+        <a href="dashboard.php">Dashboard</a>
 
-    <?php if ($_SESSION['usuario_tipo'] == 'admin'): ?>
-        <a href="usuarios.php">Usuários</a>
-        <a href="equipamentos.php">Equipamentos</a>
-        <a href="reservas.php">Reservas</a>
-        <a href="manutencoes.php">Manutenções</a>
-        <a href="historico_manutencoes.php">Histórico</a>
-    <?php endif; ?>
+        <?php if ($_SESSION['usuario_tipo'] == 'admin'): ?>
+            <a href="usuarios.php">Usuários</a>
+            <a href="equipamentos.php">Equipamentos</a>
+            <a href="reservas.php">Reservas</a>
+            <a href="manutencoes.php">Manutenções</a>
+            <a href="historico_manutencoes.php">Histórico</a>
+        <?php endif; ?>
 
-    <?php if ($_SESSION['usuario_tipo'] == 'professor'): ?>
-        <a href="reservas.php">Reservas</a>
-    <?php endif; ?>
+        <?php if ($_SESSION['usuario_tipo'] == 'professor'): ?>
+            <a href="reservas.php">Reservas</a>
+        <?php endif; ?>
 
-    <?php if ($_SESSION['usuario_tipo'] == 'tecnico'): ?>
-        <a href="equipamentos.php">Equipamentos</a>
-        <a href="reservas.php">Reservas</a>
-        <a href="manutencoes.php">Manutenções</a>
-        <a href="historico_manutencoes.php">Histórico</a>
-    <?php endif; ?>
+        <?php if ($_SESSION['usuario_tipo'] == 'tecnico'): ?>
+            <a href="equipamentos.php">Equipamentos</a>
+            <a href="reservas.php">Reservas</a>
+            <a href="manutencoes.php">Manutenções</a>
+            <a href="historico_manutencoes.php">Histórico</a>
+        <?php endif; ?>
 
-    <a href="../logout.php">Sair</a>
-</div>
-
-<div class="content">
-
-    <div class="topbar">
-        <strong>Equipamentos</strong>
+        <a href="../logout.php">Sair</a>
     </div>
 
-    <!-- CADASTRO -->
-    <div class="card">
+    <div class="content">
 
-        <h3>Cadastrar Equipamento</h3>
+        <div class="topbar">
+            <strong>Equipamentos</strong>
+        </div>
 
-        <form method="POST">
+        <!-- CADASTRO -->
+        <div class="card">
 
-            <input type="text" name="codigo" placeholder="Código (ex: PC-01)" required>
+            <h3>Cadastrar Equipamento</h3>
 
-            <select name="tipo_id" required>
-                <option value="">Selecione o tipo</option>
-                <?php
-                $tipos = $conn->query("SELECT * FROM tipos_equipamento");
-                while ($t = $tipos->fetch_assoc()) {
-                    echo "<option value='{$t['id']}'>{$t['nome']}</option>";
-                }
-                ?>
-            </select>
+            <form method="POST">
 
-            <select name="local_id" required>
-                <option value="">Selecione o local</option>
-                <?php
-                $locais = $conn->query("SELECT * FROM locais");
-                while ($l = $locais->fetch_assoc()) {
-                    echo "<option value='{$l['id']}'>{$l['nome']}</option>";
-                }
-                ?>
-            </select>
+                <input type="text" name="codigo" placeholder="Código (ex: PC-01)" required>
 
-            <input type="text" name="descricao" placeholder="Descrição" required>
+                <select name="tipo_id" required>
+                    <option value="">Selecione o tipo</option>
+                    <?php
+                    $tipos = $conn->query("SELECT * FROM tipos_equipamento");
+                    while ($t = $tipos->fetch_assoc()) {
+                        echo "<option value='{$t['id']}'>{$t['nome']}</option>";
+                    }
+                    ?>
+                </select>
 
-            <button type="submit" name="cadastrar">Cadastrar</button>
-        </form>
+                <select name="local_id" required>
+                    <option value="">Selecione o local</option>
+                    <?php
+                    $locais = $conn->query("SELECT * FROM locais");
+                    while ($l = $locais->fetch_assoc()) {
+                        echo "<option value='{$l['id']}'>{$l['nome']}</option>";
+                    }
+                    ?>
+                </select>
 
-        <?php
-        if (isset($_POST['cadastrar'])) {
+                <input type="text" name="descricao" placeholder="Descrição" required>
 
-            $codigo = $_POST['codigo'];
-            $tipo_id = $_POST['tipo_id'];
-            $local_id = $_POST['local_id'];
-            $descricao = $_POST['descricao'];
+                <button type="submit" name="cadastrar">Cadastrar</button>
+            </form>
 
-            $sql = "INSERT INTO equipamentos 
+            <?php
+            if (isset($_POST['cadastrar'])) {
+
+                $codigo = $_POST['codigo'];
+                $tipo_id = $_POST['tipo_id'];
+                $local_id = $_POST['local_id'];
+                $descricao = $_POST['descricao'];
+
+                $sql = "INSERT INTO equipamentos 
                     (codigo, tipo_id, local_id, descricao, status)
                     VALUES ('$codigo', $tipo_id, $local_id, '$descricao', 'disponivel')";
 
-            if ($conn->query($sql)) {
-                echo "<p style='color:green;'>Equipamento cadastrado!</p>";
-            } else {
-                echo "<p style='color:red;'>Erro ao cadastrar!</p>";
+                if ($conn->query($sql)) {
+                    echo "<p style='color:green;'>Equipamento cadastrado!</p>";
+                } else {
+                    echo "<p style='color:red;'>Erro ao cadastrar!</p>";
+                }
             }
-        }
-        ?>
+            ?>
 
-    </div>
+        </div>
 
-    <!-- FILTRO -->
-    <div class="card">
+        <!-- FILTRO -->
+        <div class="card">
 
-        <h3>Filtrar por Local</h3>
+            <h3>Filtrar por Local</h3>
 
-        <form method="GET">
-            <select name="filtro_local" onchange="this.form.submit()">
-                <option value="">Todos os locais</option>
+            <form method="GET">
+                <select name="filtro_local" onchange="this.form.submit()">
+                    <option value="">Todos os locais</option>
+
+                    <?php
+                    $locais = $conn->query("SELECT * FROM locais");
+                    while ($l = $locais->fetch_assoc()) {
+
+                        $selected = (isset($_GET['filtro_local']) && $_GET['filtro_local'] == $l['id']) ? "selected" : "";
+
+                        echo "<option value='{$l['id']}' $selected>{$l['nome']}</option>";
+                    }
+                    ?>
+                </select>
+            </form>
+
+        </div>
+
+        <!-- LISTAGEM -->
+        <div class="card">
+
+            <h3>Lista de Equipamentos</h3>
+
+            <table>
+                <tr>
+                    <th>ID</th>
+                    <th>Código</th>
+                    <th>Tipo</th>
+                    <th>Local</th>
+                    <th>Status</th>
+                    <th>Ação</th>
+                </tr>
 
                 <?php
-                $locais = $conn->query("SELECT * FROM locais");
-                while ($l = $locais->fetch_assoc()) {
+                $filtro = "";
 
-                    $selected = (isset($_GET['filtro_local']) && $_GET['filtro_local'] == $l['id']) ? "selected" : "";
-
-                    echo "<option value='{$l['id']}' $selected>{$l['nome']}</option>";
+                if (isset($_GET['filtro_local']) && !empty($_GET['filtro_local'])) {
+                    $local_id = $_GET['filtro_local'];
+                    $filtro = "WHERE e.local_id = $local_id";
                 }
-                ?>
-            </select>
-        </form>
 
-    </div>
-
-    <!-- LISTAGEM -->
-    <div class="card">
-
-        <h3>Lista de Equipamentos</h3>
-
-        <table>
-            <tr>
-                <th>ID</th>
-                <th>Código</th>
-                <th>Tipo</th>
-                <th>Local</th>
-                <th>Status</th>
-                <th>Ação</th>
-            </tr>
-
-            <?php
-            $filtro = "";
-
-            if (isset($_GET['filtro_local']) && !empty($_GET['filtro_local'])) {
-                $local_id = $_GET['filtro_local'];
-                $filtro = "WHERE e.local_id = $local_id";
-            }
-
-            $sql = "SELECT e.*, t.nome AS tipo, l.nome AS local
+                $sql = "SELECT e.*, t.nome AS tipo, l.nome AS local
                     FROM equipamentos e
                     LEFT JOIN tipos_equipamento t ON e.tipo_id = t.id
                     LEFT JOIN locais l ON e.local_id = l.id
                     $filtro";
 
-            $result = $conn->query($sql);
+                $result = $conn->query($sql);
 
-            while ($row = $result->fetch_assoc()) {
+                while ($row = $result->fetch_assoc()) {
 
-                echo "<tr>
+                    echo "<tr>
                         <td>{$row['id']}</td>
                         <td>{$row['codigo']}</td>
                         <td>{$row['tipo']}</td>
                         <td>{$row['local']}</td>
                         <td>";
 
-                if ($row['status'] == 'disponivel') {
-                    echo "<span class='status-disponivel'>Disponível</span>";
-                } else {
-                    echo "<span class='status-emprestado'>Em uso</span>";
-                }
+                    if ($row['status'] == 'disponivel') {
+                        echo "<span class='status-disponivel'>Disponível</span>";
+                    } else {
+                        echo "<span class='status-emprestado'>Em uso</span>";
+                    }
 
-                echo "</td>
+                    echo "</td>
                         <td>
                             <a href='?excluir={$row['id']}'
                                onclick='return confirmarExclusao()'>
@@ -190,24 +191,57 @@ if (
                             </a>
                         </td>
                       </tr>";
-            }
-            ?>
+                }
+                ?>
 
-        </table>
+            </table>
 
-        <?php
-        if (isset($_GET['excluir'])) {
-            $id = $_GET['excluir'];
-            $conn->query("DELETE FROM equipamentos WHERE id=$id");
+<?php
+if (isset($_GET['excluir'])) {
 
-            header("Location: equipamentos.php");
-            exit();
-        }
-        ?>
+    $id = (int) $_GET['excluir'];
+
+    // Verifica manutenções
+    $manutencoes = $conn->query("
+        SELECT COUNT(*) AS total
+        FROM manutencoes
+        WHERE equipamento_id = $id
+    ")->fetch_assoc();
+
+    if ($manutencoes['total'] > 0) {
+        echo "<script>
+                alert('Não é possível excluir este equipamento porque existem manutenções vinculadas.');
+                window.location='equipamentos.php';
+              </script>";
+        exit();
+    }
+
+    // Verifica reservas
+    $reservas = $conn->query("
+        SELECT COUNT(*) AS total
+        FROM reservas
+        WHERE equipamento_id = $id
+    ")->fetch_assoc();
+
+    if ($reservas['total'] > 0) {
+        echo "<script>
+                alert('Não é possível excluir este equipamento porque existem reservas vinculadas.');
+                window.location='equipamentos.php';
+              </script>";
+        exit();
+    }
+
+    // Exclui equipamento
+    $conn->query("DELETE FROM equipamentos WHERE id = $id");
+
+    header("Location: equipamentos.php");
+    exit();
+}
+?>
+        </div>
 
     </div>
 
-</div>
-
 </body>
+
 </html>

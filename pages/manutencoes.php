@@ -1,14 +1,15 @@
 <?php
-include("../config/protecao.php");
-include("../config/conexao.php");
+include("../config/protecao.php"); // Proteção de login
+include("../config/conexao.php"); // Conexão com banco
 
+// Verifica permissão
 if (
     $_SESSION['usuario_tipo'] != 'admin' &&
     $_SESSION['usuario_tipo'] != 'professor' &&
     $_SESSION['usuario_tipo'] != 'tecnico'
 ) {
-    echo "Acesso negado!";
-    exit();
+    echo "Acesso negado!"; // Bloqueia acesso
+    exit(); // Encerra página
 }
 ?>
 
@@ -18,8 +19,8 @@ if (
     <meta charset="UTF-8">
     <title>Manutenções</title>
 
-    <link rel="stylesheet" href="../assents/css/style.css">
-    <script src="../assents/js/script.js"></script>
+    <link rel="stylesheet" href="../assents/css/style.css"> <!-- CSS -->
+    <script src="../assents/js/script.js"></script> <!-- JS -->
 </head>
 
 <body>
@@ -30,26 +31,35 @@ if (
     <a href="dashboard.php">Dashboard</a>
 
     <?php if ($_SESSION['usuario_tipo'] == 'admin'): ?>
+
+        <!-- Menu admin -->
         <a href="usuarios.php">Usuários</a>
         <a href="equipamentos.php">Equipamentos</a>
         <a href="reservas.php">Reservas</a>
         <a href="manutencoes.php">Manutenções</a>
         <a href="historico_manutencoes.php">Histórico</a>
+
     <?php endif; ?>
 
     <?php if ($_SESSION['usuario_tipo'] == 'professor'): ?>
+
+        <!-- Menu professor -->
         <a href="reservas.php">Reservas</a>
         <a href="manutencoes.php">Manutenções</a>
+
     <?php endif; ?>
 
     <?php if ($_SESSION['usuario_tipo'] == 'tecnico'): ?>
+
+        <!-- Menu técnico -->
         <a href="equipamentos.php">Equipamentos</a>
         <a href="reservas.php">Reservas</a>
         <a href="manutencoes.php">Manutenções</a>
         <a href="historico_manutencoes.php">Histórico</a>
+
     <?php endif; ?>
 
-    <a href="../logout.php">Sair</a>
+    <a href="../logout.php">Sair</a> <!-- Logout -->
 </div>
 
 <div class="content">
@@ -67,21 +77,25 @@ if (
 
         <form method="GET">
 
+            <!-- Lista locais -->
             <select name="local_id" onchange="this.form.submit()">
 
                 <option value="">Todos os locais</option>
 
                 <?php
 
+                // Busca locais
                 $locais = $conn->query("SELECT * FROM locais");
 
                 while ($l = $locais->fetch_assoc()) {
 
+                    // Mantém selecionado
                     $selected = (
                         isset($_GET['local_id']) &&
                         $_GET['local_id'] == $l['id']
                     ) ? "selected" : "";
 
+                    // Exibe opções
                     echo "<option value='{$l['id']}' $selected>
                             {$l['nome']}
                           </option>";
@@ -102,14 +116,16 @@ if (
 
         <form method="POST">
 
+            <!-- Lista equipamentos -->
             <select name="equipamento_id" required>
 
                 <option value="">Selecione um equipamento</option>
 
                 <?php
 
-                $filtro = "";
+                $filtro = ""; // Filtro vazio
 
+                // Verifica filtro local
                 if (
                     isset($_GET['local_id']) &&
                     !empty($_GET['local_id'])
@@ -117,9 +133,11 @@ if (
 
                     $local_id = $_GET['local_id'];
 
+                    // Filtra por local
                     $filtro = "AND e.local_id = $local_id";
                 }
 
+                // Busca equipamentos livres
                 $equipamentos = $conn->query("
 
                     SELECT e.*
@@ -140,6 +158,7 @@ if (
 
                 while ($eq = $equipamentos->fetch_assoc()) {
 
+                    // Mostra equipamentos
                     echo "<option value='{$eq['id']}'>
                             {$eq['codigo']}
                           </option>";
@@ -149,11 +168,13 @@ if (
 
             </select><br><br>
 
+            <!-- Campo descrição -->
             <input type="text"
                    name="descricao"
                    placeholder="Descrição do problema"
                    required><br><br>
 
+            <!-- Botão abrir -->
             <button type="submit" name="abrir">
                 Abrir Manutenção
             </button>
@@ -162,17 +183,20 @@ if (
 
         <?php
 
+        // Verifica envio
         if (isset($_POST['abrir'])) {
 
-            $equipamento_id = $_POST['equipamento_id'];
-            $descricao = $_POST['descricao'];
-            $data = date("Y-m-d");
+            $equipamento_id = $_POST['equipamento_id']; // ID equipamento
+            $descricao = $_POST['descricao']; // Problema
+            $data = date("Y-m-d"); // Data atual
 
+            // Insere manutenção
             $sql = "INSERT INTO manutencoes
                     (equipamento_id, descricao, data_inicio, status)
                     VALUES
                     ($equipamento_id, '$descricao', '$data', 'aberta')";
 
+            // Executa cadastro
             if ($conn->query($sql)) {
 
                 echo "<p style='color:green;'>
@@ -210,6 +234,7 @@ if (
 
             <?php
 
+            // Busca manutenções abertas
             $sql = "SELECT m.*, e.codigo as equipamento
                     FROM manutencoes m
                     JOIN equipamentos e
@@ -218,6 +243,7 @@ if (
 
             $result = $conn->query($sql);
 
+            // Percorre resultados
             while ($row = $result->fetch_assoc()) {
 
                 echo "<tr>
@@ -236,6 +262,7 @@ if (
 
                         <td>";
 
+                // Apenas admin/técnico
                 if ($_SESSION['usuario_tipo'] != 'professor') {
 
                     echo "<a href='?finalizar={$row['id']}'
@@ -258,20 +285,22 @@ if (
 
         <?php
 
+        // Finaliza manutenção
         if (
             isset($_GET['finalizar']) &&
             $_SESSION['usuario_tipo'] != 'professor'
         ) {
 
-            $id = $_GET['finalizar'];
-            $data_fim = date("Y-m-d");
+            $id = $_GET['finalizar']; // ID manutenção
+            $data_fim = date("Y-m-d"); // Data final
 
+            // Atualiza status
             $conn->query("UPDATE manutencoes
                           SET status='concluida',
                               data_fim='$data_fim'
                           WHERE id=$id");
 
-            header("Location: manutencoes.php");
+            header("Location: manutencoes.php"); // Recarrega
             exit();
         }
 
