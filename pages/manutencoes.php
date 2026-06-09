@@ -68,7 +68,7 @@ if (
         <strong>Manutenção de Equipamentos</strong>
     </div>
 
-    <?php if ($_SESSION['usuario_tipo'] != 'professor'): ?>
+<?php if ($_SESSION['usuario_tipo'] != 'professor'): ?>
 
     <!-- FILTRO -->
     <div class="card">
