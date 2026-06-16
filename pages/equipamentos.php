@@ -57,6 +57,35 @@ if (
         <div class="topbar">
             <strong>Equipamentos</strong>
         </div>
+        <?php
+        if (isset($_GET['erro'])) {
+
+            if ($_GET['erro'] == 'manutencao') {
+
+                echo "<div class='mensagem-erro'>
+                Não é possível excluir este equipamento porque existem manutenções vinculadas.
+              </div>";
+            }
+
+            if ($_GET['erro'] == 'reserva') {
+
+                echo "<div class='mensagem-erro'>
+                Não é possível excluir este equipamento porque existem reservas vinculadas.
+              </div>";
+            }
+        }
+
+        if (isset($_GET['sucesso'])) {
+
+            if ($_GET['sucesso'] == 'excluido') {
+
+                echo "<div class='mensagem-sucesso'>
+                Equipamento excluído com sucesso!
+              </div>";
+            }
+        }
+        ?>
+
 
         <!-- CADASTRO -->
         <div class="card">
@@ -100,14 +129,22 @@ if (
                 $local_id = $_POST['local_id'];
                 $descricao = $_POST['descricao'];
 
-                $sql = "INSERT INTO equipamentos 
-                    (codigo, tipo_id, local_id, descricao, status)
-                    VALUES ('$codigo', $tipo_id, $local_id, '$descricao', 'disponivel')";
+                $sql = "INSERT INTO equipamentos
+                (codigo, tipo_id, local_id, descricao, status)
+                VALUES
+                ('$codigo', $tipo_id, $local_id, '$descricao', 'disponivel')";
 
                 if ($conn->query($sql)) {
-                    echo "<p style='color:green;'>Equipamento cadastrado!</p>";
+
+                    echo "<div class='mensagem-sucesso'>
+                    Equipamento cadastrado com sucesso!
+                  </div>";
+
                 } else {
-                    echo "<p style='color:red;'>Erro ao cadastrar!</p>";
+
+                    echo "<div class='mensagem-erro'>
+                    Erro ao cadastrar equipamento!
+                  </div>";
                 }
             }
             ?>
@@ -196,48 +233,49 @@ if (
 
             </table>
 
-<?php
-if (isset($_GET['excluir'])) {
+            <?php
+            if (isset($_GET['excluir'])) {
 
-    $id = (int) $_GET['excluir'];
+                $id = (int) $_GET['excluir'];
 
-    // Verifica manutenções
-    $manutencoes = $conn->query("
+                // Verifica manutenções
+                $manutencoes = $conn->query("
         SELECT COUNT(*) AS total
         FROM manutencoes
         WHERE equipamento_id = $id
     ")->fetch_assoc();
+                if ($manutencoes['total'] > 0) {
 
-    if ($manutencoes['total'] > 0) {
-        echo "<script>
-                alert('Não é possível excluir este equipamento porque existem manutenções vinculadas.');
-                window.location='equipamentos.php';
-              </script>";
-        exit();
-    }
+                    echo "<script>
+            window.location='equipamentos.php?erro=manutencao';
+          </script>";
+                    exit();
+                }
 
-    // Verifica reservas
-    $reservas = $conn->query("
-        SELECT COUNT(*) AS total
-        FROM reservas
-        WHERE equipamento_id = $id
-    ")->fetch_assoc();
+                // Verifica reservas
+                $reservas = $conn->query("
+    SELECT COUNT(*) AS total
+    FROM reservas
+    WHERE equipamento_id = $id
+")->fetch_assoc();
 
-    if ($reservas['total'] > 0) {
-        echo "<script>
-                alert('Não é possível excluir este equipamento porque existem reservas vinculadas.');
-                window.location='equipamentos.php';
-              </script>";
-        exit();
-    }
+                if ($reservas['total'] > 0) {
 
-    // Exclui equipamento
-    $conn->query("DELETE FROM equipamentos WHERE id = $id");
+                    echo "<script>
+            window.location='equipamentos.php?erro=reserva';
+          </script>";
+                    exit();
+                }
 
-    header("Location: equipamentos.php");
-    exit();
-}
-?>
+                // Exclui equipamento
+                $conn->query("DELETE FROM equipamentos WHERE id = $id");
+
+                echo "<script>
+        window.location='equipamentos.php?sucesso=excluido';
+      </script>";
+                exit();
+            }
+            ?>
         </div>
 
     </div>

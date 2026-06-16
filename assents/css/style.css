@@ -234,3 +234,23 @@ td a:hover {
     }
 }
 
+/* =========================
+   MENSAGENS
+========================= */
+
+.mensagem-sucesso {
+    background: #d1fae5;
+    color: #065f46;
+    padding: 12px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+}
+
+.mensagem-erro {
+    background: #fee2e2;
+    color: #991b1b;
+    padding: 12px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+}
+
