@@ -19,18 +19,25 @@ if (
 // Armazena o tipo do usuário logado
 $tipo = $_SESSION['usuario_tipo'];
 
-// Busca clima de Cataguases
+// Busca clima de Cataguases na API
 $url = "https://api.open-meteo.com/v1/forecast?latitude=-21.39&longitude=-42.70&current=temperature_2m,weather_code";
 
+// Recebe resposta da API
 $resposta = file_get_contents($url);
 
+// Converte JSON para array PHP
 $dados = json_decode($resposta, true);
 
+// Obtém temperatura atual
 $temperatura = $dados['current']['temperature_2m'];
+
+// Obtém código da condição climática
 $codigo = $dados['current']['weather_code'];
 
+// Valor padrão do clima
 $clima = "Não informado";
 
+// Traduz código da API para texto
 if ($codigo == 0) {
     $clima = "Ensolarado";
 } elseif ($codigo <= 3) {
@@ -40,6 +47,8 @@ if ($codigo == 0) {
 } else {
     $clima = "Chuva";
 }
+
+
 ?>
 
 
