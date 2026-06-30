@@ -1,208 +1,214 @@
 /* RESET */
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Segoe UI', Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Segoe UI", Arial, sans-serif;
 }
 
 /* =========================
    CORES PADRÃO
 ========================= */
 :root {
-    --verde-principal: #22c55e;
-    --verde-escuro: #15803d;
-    --verde-claro: #dcfce7;
+  --verde-principal: #22c55e;
+  --verde-escuro: #15803d;
+  --verde-claro: #dcfce7;
 
-    --fundo: #f8fafc;
-    --branco: #ffffff;
-    --cinza: #64748b;
-    --cinza-claro: #e5e7eb;
+  --fundo: #f8fafc;
+  --branco: #ffffff;
+  --cinza: #64748b;
+  --cinza-claro: #e5e7eb;
 }
 
 /* =========================
    FUNDO GERAL
 ========================= */
 body {
-    background: var(--fundo);
+  background: var(--fundo);
 }
 
 /* =========================
    SIDEBAR
 ========================= */
 .sidebar {
-    width: 230px;
-    height: 100vh;
-    background: linear-gradient(180deg, var(--verde-principal), var(--verde-escuro));
-    position: fixed;
-    color: white;
-    padding: 20px;
+  width: 230px;
+  height: 100vh;
+  background: linear-gradient(
+    180deg,
+    var(--verde-principal),
+    var(--verde-escuro)
+  );
+  position: fixed;
+  color: white;
+  padding: 20px;
 }
 
 .sidebar h2 {
-    margin-bottom: 25px;
-    font-size: 20px;
+  margin-bottom: 25px;
+  font-size: 20px;
 }
 
 .sidebar a {
-    display: block;
-    color: #ecfdf5;
-    text-decoration: none;
-    padding: 12px;
-    border-radius: 10px;
-    margin-bottom: 8px;
-    transition: 0.2s;
+  display: block;
+  color: #ecfdf5;
+  text-decoration: none;
+  padding: 12px;
+  border-radius: 10px;
+  margin-bottom: 8px;
+  transition: 0.2s;
 }
 
 .sidebar a:hover {
-    background: rgba(255,255,255,0.15);
-    transform: translateX(5px);
+  background: rgba(255, 255, 255, 0.15);
+  transform: translateX(5px);
 }
 
 /* =========================
    CONTEÚDO
 ========================= */
 .content {
-    margin-left: 250px;
-    padding: 25px;
+  margin-left: 250px;
+  padding: 25px;
 }
 
 /* =========================
    TOPBAR
 ========================= */
 .topbar {
-    background: var(--branco);
-    padding: 18px;
-    border-radius: 12px;
-    margin-bottom: 20px;
-    box-shadow: 0 3px 12px rgba(0,0,0,0.05);
+  background: var(--branco);
+  padding: 18px;
+  border-radius: 12px;
+  margin-bottom: 20px;
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.05);
 }
 
 /* =========================
    CARDS
 ========================= */
 .card {
-    background: var(--branco);
-    padding: 20px;
-    border-radius: 14px;
-    margin-bottom: 20px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+  background: var(--branco);
+  padding: 20px;
+  border-radius: 14px;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
 }
 
 .card h3 {
-    margin-bottom: 15px;
-    color: #111827;
+  margin-bottom: 15px;
+  color: #111827;
 }
 
 /* =========================
    FORMULÁRIOS
 ========================= */
-input, select {
-    width: 100%;
-    padding: 12px;
-    margin-top: 8px;
-    margin-bottom: 12px;
-    border: 1px solid var(--cinza-claro);
-    border-radius: 10px;
-    outline: none;
-    transition: 0.2s;
+input,
+select {
+  width: 100%;
+  padding: 12px;
+  margin-top: 8px;
+  margin-bottom: 12px;
+  border: 1px solid var(--cinza-claro);
+  border-radius: 10px;
+  outline: none;
+  transition: 0.2s;
 }
 
-input:focus, select:focus {
-    border-color: var(--verde-principal);
-    box-shadow: 0 0 0 2px var(--verde-claro);
+input:focus,
+select:focus {
+  border-color: var(--verde-principal);
+  box-shadow: 0 0 0 2px var(--verde-claro);
 }
 
 /* BOTÕES */
 button {
-    background: var(--verde-principal);
-    color: white;
-    border: none;
-    padding: 12px 18px;
-    border-radius: 10px;
-    cursor: pointer;
-    transition: 0.2s;
-    font-weight: bold;
+  background: var(--verde-principal);
+  color: white;
+  border: none;
+  padding: 12px 18px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: 0.2s;
+  font-weight: bold;
 }
 
 button:hover {
-    background: var(--verde-escuro);
+  background: var(--verde-escuro);
 }
 
 /* =========================
    TABELAS
 ========================= */
 table {
-    width: 100%;
-    border-collapse: collapse;
-    background: white;
-    border-radius: 12px;
-    overflow: hidden;
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
 }
 
 th {
-    background: var(--verde-principal);
-    color: white;
-    padding: 12px;
-    text-align: left;
+  background: var(--verde-principal);
+  color: white;
+  padding: 12px;
+  text-align: left;
 }
 
 td {
-    padding: 12px;
-    border-bottom: 1px solid #f1f5f9;
+  padding: 12px;
+  border-bottom: 1px solid #f1f5f9;
 }
 
 tr:hover {
-    background: #f9fafb;
+  background: #f9fafb;
 }
 
 /* =========================
    STATUS
 ========================= */
 .status-disponivel {
-    background: #22c55e;
-    color: white;
-    padding: 6px 12px;
-    border-radius: 20px;
-    font-size: 12px;
+  background: #22c55e;
+  color: white;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 12px;
 }
 
 .status-ocupado {
-    background: #f59e0b;
-    color: white;
-    padding: 6px 12px;
-    border-radius: 20px;
-    font-size: 12px;
+  background: #f59e0b;
+  color: white;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 12px;
 }
 
 .status-manutencao {
-    background: #ef4444;
-    color: white;
-    padding: 6px 12px;
-    border-radius: 20px;
-    font-size: 12px;
+  background: #ef4444;
+  color: white;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 12px;
 }
 
 /* =========================
    LINKS
 ========================= */
 td a {
-    color: #ef4444;
-    text-decoration: none;
-    font-weight: bold;
+  color: #ef4444;
+  text-decoration: none;
+  font-weight: bold;
 }
 
 td a:hover {
-    text-decoration: underline;
+  text-decoration: underline;
 }
 
 /* =========================
    DASHBOARD
 ========================= */
 .dashboard-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 20px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
 }
 
 /* =========================
@@ -210,28 +216,25 @@ td a:hover {
 ========================= */
 
 .dashboard-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 20px;
-    margin-top: 20px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
+  margin-top: 20px;
 }
-
-
 
 /* =========================
    RESPONSIVO
 ========================= */
 @media (max-width: 768px) {
+  .sidebar {
+    width: 100%;
+    height: auto;
+    position: relative;
+  }
 
-    .sidebar {
-        width: 100%;
-        height: auto;
-        position: relative;
-    }
-
-    .content {
-        margin-left: 0;
-    }
+  .content {
+    margin-left: 0;
+  }
 }
 
 /* =========================
@@ -239,18 +242,52 @@ td a:hover {
 ========================= */
 
 .mensagem-sucesso {
-    background: #d1fae5;
-    color: #065f46;
-    padding: 12px;
-    border-radius: 8px;
-    margin-bottom: 15px;
+  background: #d1fae5;
+  color: #065f46;
+  padding: 12px;
+  border-radius: 8px;
+  margin-bottom: 15px;
 }
 
 .mensagem-erro {
-    background: #fee2e2;
-    color: #991b1b;
-    padding: 12px;
-    border-radius: 8px;
-    margin-bottom: 15px;
+  background: #fee2e2;
+  color: #991b1b;
+  padding: 12px;
+  border-radius: 8px;
+  margin-bottom: 15px;
 }
 
+/* =========================
+   CARDS DO DASHBOARD
+========================= */
+
+.dashboard-cards{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:20px;
+    margin-top:20px;
+}
+
+.card-resumo{
+    background:#fff;
+    border-radius:14px;
+    padding:25px;
+    box-shadow:0 4px 15px rgba(0,0,0,.08);
+    text-align:center;
+    transition:.2s;
+}
+
+.card-resumo:hover{
+    transform:translateY(-5px);
+}
+
+.card-resumo h3{
+    color:#555;
+    font-size:18px;
+    margin-bottom:15px;
+}
+
+.card-resumo h1{
+    font-size:46px;
+    color:var(--verde-principal);
+}

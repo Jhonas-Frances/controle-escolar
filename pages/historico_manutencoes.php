@@ -73,12 +73,12 @@ if (
 
                 <?php
 
-                $sql = "SELECT m.*, e.codigo as equipamento
-                    FROM manutencoes m
-                    JOIN equipamentos e
-                    ON m.equipamento_id = e.id
-                    WHERE m.status='concluida'
-                    ORDER BY m.data_fim DESC";
+                $sql = "SELECT m.*, e.codigo AS equipamento
+            FROM manutencoes m
+            JOIN equipamentos e
+                ON m.equipamento_id = e.id
+            WHERE m.status = 'concluida'
+            ORDER BY m.data_fim DESC";
 
                 $result = $conn->query($sql);
 
@@ -86,21 +86,21 @@ if (
 
                     echo "<tr>
 
-                        <td>{$row['equipamento']}</td>
+                <td>{$row['equipamento']}</td>
 
-                        <td>{$row['descricao']}</td>
+                <td>{$row['descricao']}</td>
 
-                        <td>{$row['data_inicio']}</td>
+                <td>" . date('d/m/Y', strtotime($row['data_inicio'])) . "</td>
 
-                        <td>{$row['data_fim']}</td>
+                <td>" . date('d/m/Y', strtotime($row['data_fim'])) . "</td>
 
-                        <td>
-                            <span class='status-disponivel'>
-                                Concluída
-                            </span>
-                        </td>
+                <td>
+                    <span class='status-disponivel'>
+                        Concluída
+                    </span>
+                </td>
 
-                      </tr>";
+              </tr>";
                 }
 
                 ?>
@@ -122,7 +122,7 @@ if (
 
                 <?php
 
-                $sql = "SELECT r.*, 
+                $sql = "SELECT r.*,
                    u.nome AS professor,
                    e.codigo AS equipamento
             FROM reservas r
@@ -142,13 +142,17 @@ if (
 
                 <td>{$row['equipamento']}</td>
 
-                <td>{$row['data_reserva']}</td>
+                <td>" . date('d/m/Y', strtotime($row['data_reserva'])) . "</td>
 
-                <td>{$row['hora_inicio']}</td>
+                <td>" . date('H:i', strtotime($row['hora_inicio'])) . "</td>
 
-                <td>{$row['hora_fim']}</td>
+                <td>" . date('H:i', strtotime($row['hora_fim'])) . "</td>
 
-                <td>{$row['status']}</td>
+                <td>
+                    <span class='status-disponivel'>
+                        Finalizada
+                    </span>
+                </td>
 
               </tr>";
                 }

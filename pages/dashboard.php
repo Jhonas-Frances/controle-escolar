@@ -48,72 +48,136 @@ if ($codigo == 0) {
     $clima = "Chuva";
 }
 
+// Total de equipamentos
+$totalEquipamentos = $conn->query("
+    SELECT COUNT(*) AS total
+    FROM equipamentos
+")->fetch_assoc()['total'];
+
+// Total de reservas
+$totalReservas = $conn->query("
+    SELECT COUNT(*) AS total
+    FROM reservas
+")->fetch_assoc()['total'];
+
+// Manutenções abertas
+$totalManutencoes = $conn->query("
+    SELECT COUNT(*) AS total
+    FROM manutencoes
+    WHERE status='aberta'
+")->fetch_assoc()['total'];
+
+// Manutenções concluídas
+$manutencoesConcluidas = $conn->query("
+    SELECT COUNT(*) AS total
+    FROM manutencoes
+    WHERE status='concluida'
+")->fetch_assoc()['total'];
+
+// Reservas finalizadas
+$reservasFinalizadas = $conn->query("
+    SELECT COUNT(*) AS total
+    FROM reservas
+    WHERE status='finalizada'
+")->fetch_assoc()['total'];
 
 ?>
 
 
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="UTF-8">
     <title>Dashboard</title>
 
     <!-- Arquivo de estilos do sistema -->
-    <link rel="stylesheet" href="../assents/css/style.css?v=3">
+    <link rel="stylesheet" href="../assents/css/style.css?v=4">
 </head>
 
 <body>
 
-<!-- Menu lateral -->
-<div class="sidebar">
-    <h2>Controle Escolar</h2>
+    <!-- Menu lateral -->
+    <div class="sidebar">
+        <h2>Controle Escolar</h2>
 
-    <!-- Link principal -->
-    <a href="dashboard.php">Dashboard</a>
+        <!-- Link principal -->
+        <a href="dashboard.php">Dashboard</a>
 
-    <!-- Menu exclusivo para administrador -->
-    <?php if ($_SESSION['usuario_tipo'] == 'admin'): ?>
-    <a href="usuarios.php">Usuários</a>
-    <a href="equipamentos.php">Equipamentos</a>
-    <a href="reservas.php">Reservas</a>
-    <a href="manutencoes.php">Manutenções</a>
-    <a href="historico_manutencoes.php">Histórico</a>
-<?php endif; ?>
+        <!-- Menu exclusivo para administrador -->
+        <?php if ($_SESSION['usuario_tipo'] == 'admin'): ?>
+            <a href="usuarios.php">Usuários</a>
+            <a href="equipamentos.php">Equipamentos</a>
+            <a href="reservas.php">Reservas</a>
+            <a href="manutencoes.php">Manutenções</a>
+            <a href="historico_manutencoes.php">Histórico</a>
+        <?php endif; ?>
 
-    <!-- Menu exclusivo para professor -->
-    <?php if ($_SESSION['usuario_tipo'] == 'professor'): ?>
-    <a href="reservas.php">Reservas</a>
-    <a href="manutencoes.php">Manutenções</a>
-<?php endif; ?>
+        <!-- Menu exclusivo para professor -->
+        <?php if ($_SESSION['usuario_tipo'] == 'professor'): ?>
+            <a href="reservas.php">Reservas</a>
+            <a href="manutencoes.php">Manutenções</a>
+        <?php endif; ?>
 
-    <!-- Menu exclusivo para técnico -->
-    <?php if ($_SESSION['usuario_tipo'] == 'tecnico'): ?>
-    <a href="equipamentos.php">Equipamentos</a>
-    <a href="reservas.php">Reservas</a>
-    <a href="manutencoes.php">Manutenções</a>
-    <a href="historico_manutencoes.php">Histórico</a>
-<?php endif; ?>
+        <!-- Menu exclusivo para técnico -->
+        <?php if ($_SESSION['usuario_tipo'] == 'tecnico'): ?>
+            <a href="equipamentos.php">Equipamentos</a>
+            <a href="reservas.php">Reservas</a>
+            <a href="manutencoes.php">Manutenções</a>
+            <a href="historico_manutencoes.php">Histórico</a>
+        <?php endif; ?>
 
-    <!-- Encerra a sessão do usuário -->
-    <a href="../logout.php">Sair</a>
-</div>
-
-<!-- Área principal do sistema -->
-<div class="content">
-
-    <!-- Barra superior com o nome do usuário logado -->
-    <div class="topbar">
-        <strong>Bem-vindo, <?php echo $_SESSION['usuario_nome']; ?></strong>
+        <!-- Encerra a sessão do usuário -->
+        <a href="../logout.php">Sair</a>
     </div>
 
-<div class="card">
+    <!-- Área principal do sistema -->
+    <div class="content">
 
-    <h3>Clima Atual - Cataguases/MG</h3>
+        <!-- Barra superior com o nome do usuário logado -->
+        <div class="topbar">
+            <strong>Bem-vindo, <?php echo $_SESSION['usuario_nome']; ?></strong>
+        </div>
 
-<p><strong>Temperatura:</strong> <?php echo $temperatura; ?>°C</p>
+        <div class="card">
 
-<p><strong>Condição:</strong> <?php echo $clima; ?></p>
+            <h3>Clima Atual - Cataguases/MG</h3>
 
-</div>
+            <p><strong>Temperatura:</strong> <?php echo $temperatura; ?>°C</p>
+
+            <p><strong>Condição:</strong> <?php echo $clima; ?></p>
+
+        </div>
+        <div class="dashboard-cards">
+
+            <div class="card-resumo">
+                <h3>Equipamentos</h3>
+                <h1><?php echo $totalEquipamentos; ?></h1>
+            </div>
+
+            <div class="card-resumo">
+                <h3>Reservas</h3>
+                <h1><?php echo $totalReservas; ?></h1>
+            </div>
+
+            <div class="card-resumo">
+                <h3>Em Manutenção</h3>
+                <h1><?php echo $totalManutencoes; ?></h1>
+            </div>
+
+            <div class="card-resumo">
+                <h3>Manutenções Concluídas</h3>
+                <h1><?php echo $manutencoesConcluidas; ?></h1>
+            </div>
+
+            <div class="card-resumo">
+                <h3>Reservas Finalizadas</h3>
+                <h1><?php echo $reservasFinalizadas; ?></h1>
+            </div>
+
+        </div>
+
+    </div>
 </body>
+
 </html>
